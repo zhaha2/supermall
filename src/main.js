@@ -5,6 +5,9 @@ import store from './store'
 
 Vue.config.productionTip = false
 
+// 事件总线，所有组件可用他发送和接受事件
+Vue.prototype.$bus = new Vue()
+
 new Vue({
   router,
   store,
