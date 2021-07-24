@@ -2,7 +2,8 @@
   <div id="app">
     <main-tab-bar/>
     <!-- keep alive使退出当前界面不销毁，下次返回还是原来的位置 -->
-    <keep-alive>
+    <!-- 某些需要切换的东西不要keepalive -->
+    <keep-alive exclude="Detail">
       <router-view/>
     </keep-alive>
   </div>

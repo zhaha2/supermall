@@ -1,5 +1,5 @@
 <template>
-  <swiper>
+  <swiper ref="swiper">
     <!-- 不绑定 ：key会报错, 绑定之后相当于Vue每次都会重回新创建，不会复用
     但是这里绑定index做key实际上和默认不绑定key的行为是一样的，只是为了防止报错
     都不会复用（最好用item本身的id属性做key） -->
@@ -43,6 +43,19 @@
           this.isLoad = true
         }
       }
+    },
+    activated() {
+      // console.log("active");
+      // this.$refs.scroll.scrollTo(0, this.saveY, 0)
+      //使用keepAlive时的生命周期函数：页面打开时触发
+      // setTimeout(() => {
+        // this.$refs.scroll.scrollTo(0, this.offsettop, 0);
+        // this.$refs.swiper.startTimer()
+      // }, 0);
+    },
+    deactivated() {
+	    // console.log("deactive");
+      // this.$refs.swiper.stopTimer()
     }
   }
 </script>

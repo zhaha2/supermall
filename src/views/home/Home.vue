@@ -15,7 +15,7 @@
             ref="scroll"
             @scroll="contentScroll"
             @pullingUp="loadMore">
-      <home-swiper :banners="banners" @swipeImgLoad="swipeImgLoad"/>
+      <home-swiper :banners="banners" @swipeImgLoad="swipeImgLoad" ref="homeSwiper"/>
       <recommend-view :recommends="recommends"/>
       <feature-view/>
       <tab-control :titles="['流行','新款','精选']"
@@ -66,6 +66,7 @@
         currentType: 'pop',
         isShowBackTop: false,
         tabOffsetTop: 0,
+        saveY: 0,
         isTabFixed: false,
       }
     },
@@ -90,6 +91,40 @@
       // (获取offsetTop会回流)
       // 这里图片还没加载，offsetTop还没算图片高度
       // console.log(this.$refs.tabControl.$el.offsetTop);
+    },
+    destroyed() {
+      console.log('des');
+    },
+    // 用router back返回有时候（过一定时间）不会保存位置
+    activated() {
+      // console.log(this.saveY);
+
+      // this.$refs.scroll.scrollTo(0, this.saveY, 0)
+      // this.$refs.scroll.refresh()
+      /*使用keepAlive时的生命周期函数：页面打开时触发
+        !!轮播图导致bug，回到首页自动跑到顶部
+        解决办法：keepalive非激活退出时的生命周期函数deactivated中清除轮播图计时器
+                activated回来时再添加计时器（
+                先判断定时器是否存在再添加，不然第一次加载也添加的话会同时有两个计时器）
+        不能立即添加计时器，否则轮播图还是会自动滚回顶端，要等300ms
+        仍存在问题：要等300ms才开始轮播
+      */
+      setTimeout(() => {
+        if (!this.$refs.homeSwiper.$refs.swiper.isTiming) {
+          // console.log(this.$refs.homeSwiper.$refs.swiper.isTiming);
+          this.$refs.homeSwiper.$refs.swiper.startTimer()
+        }
+      }, 300);
+         // this.$refs.scroll.scrollTo(0, this.offsettop, 0);
+        // this.$refs.scroll.refresh()
+    },
+    deactivated() {
+	    // this.saveY = this.$refs.scroll.scrollY
+      // console.log(this.saveY);
+      this.$refs.homeSwiper.$refs.swiper.stopTimer()
+
+      // 取消全局事件的监听
+      // this.$bus.$off('itemImgLoad', 函数名)
     },
     methods: {
       /**

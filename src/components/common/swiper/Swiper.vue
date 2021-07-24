@@ -41,6 +41,7 @@
         swiperStyle: {}, // swiper样式
         currentIndex: 1, // 当前的index
         scrolling: false, // 是否正在滚动
+        isTiming: false,
       }
     },
     mounted: function () {
@@ -48,22 +49,29 @@
       setTimeout(() => {
         this.handleDom();
 
-        // 2.开启定时器
+        // 2.开启定时器(过多久第一次开始计时)
         this.startTimer();
-      }, 3000)
+      }, 100)
     },
     methods: {
 		  /**
        * 定时器操作
        */
       startTimer: function () {
+        // console.log("start");
+        
 		    this.playTimer = window.setInterval(() => {
 		      this.currentIndex++;
 		      this.scrollContent(-this.currentIndex * this.totalWidth);
         }, this.interval)
+
+        this.isTiming = true
       },
       stopTimer: function () {
+        // console.log("stop");
+
         window.clearInterval(this.playTimer);
+        this.isTiming = false
       },
 
       /**

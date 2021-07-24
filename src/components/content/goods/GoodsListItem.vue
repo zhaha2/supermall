@@ -1,7 +1,7 @@
 <template>
   <div class="goods-item" @click="itemClick">
     <!-- vue监听： @load -->
-    <img :src="goodsItem.show.img" alt="" @load="imageLoad">
+    <img :src="showImage" alt="" @load="imageLoad">
     <div class="goods-info">
       <p>{{goodsItem.title}}</p>
       <span class="price">{{goodsItem.price}}</span>
@@ -20,12 +20,27 @@ export default {
       }
     }
   },
+  computed: {
+    showImage() {
+      // 可能每个组件传来的对象，对应图片的路径不同
+      return this.goodsItem.image || this.goodsItem.show.img
+    }
+  },
   methods: {
     imageLoad() {
-      
+      if (this.$route.path.indexOf('/home')){
+        // 常用方法：路由判断当前是哪个页面
+      }
     },
     itemClick() {
-      console.log('skip');
+      // 路由跳转
+      this.$router.push({
+        path: './detail',
+        query: {
+          // 传递参数（iid）
+          iid: this.goodsItem.iid
+        }
+      })
     }
   }
 }
