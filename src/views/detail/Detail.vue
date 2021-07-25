@@ -12,9 +12,6 @@
       <!-- 注意驼峰
             属性（goodsInfo）不区分大小写，全当小写
             传入值（goods-info）用'-'来区分大小写才能正确传入 -->
-            <ul v-for="(item, index) in $store.state.cartList" :key="index">
-              <li> {{item}}</li>
-            </ul>
       <detail-base-info :goods-info="goodsInfo"></detail-base-info>
       <detail-shop-info :shop-info="shopInfo"></detail-shop-info>
       <detail-goods-info :detail-info="detailInfo" @imageLoad="imageLoad"></detail-goods-info>
@@ -111,7 +108,7 @@
         product.image = this.topImages[0]
         product.title = this.goodsInfo.title
         product.desc = this.goodsInfo.desc
-        product.price = this.goodsInfo.lowNowPrice
+        product.price = this.goodsInfo.realPrice
         product.iid = this.iid
 
         // 2. 将商品加到购物车
